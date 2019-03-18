@@ -7,20 +7,17 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-let data = [];
-
-app.get('/api/v1/person/add', (request, response) => {
+app.get('/api/v1/person/info', (request, response) => {
     response.status(200).send({
       success: 'true',
-      message: 'information retrieved successfully',
+      message: 'Information retrieved successfully',
       info: database
     });
    });
-
    
    app.post('/api/v1/person/add', (request, response) => {
-    data.push(
-      {id:request.body.id,
+    database.push(
+      {id: Math.random,
         name:request.body.name,
         address: request.body.address,
         phone: request.body.phone
@@ -28,7 +25,7 @@ app.get('/api/v1/person/add', (request, response) => {
               
       response.status(200).send({
             success: 'true',
-            message:  JSON.stringify(request.body) + 'user added'
+            message:  'User was successfully added'
         });
 });
 
