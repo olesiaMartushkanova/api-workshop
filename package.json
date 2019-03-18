@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js --exec babel-node --"
-    },
+  },
   "author": "olesia",
   "license": "ISC",
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "install": "^0.12.2",
+    "npm": "^6.9.0",
     "pug": "^2.0.3"
   },
   "devDependencies": {

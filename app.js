@@ -7,7 +7,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/api/v1/person/info', (request, response) => {
+let data = [];
+
+app.get('/api/v1/person/add', (request, response) => {
     response.status(200).send({
       success: 'true',
       message: 'information retrieved successfully',
@@ -15,16 +17,20 @@ app.get('/api/v1/person/info', (request, response) => {
     });
    });
 
-   const NEW_USER = app.post('/api/v1/person/info', (req, res) => {
-    const user = {
-     id: 2,
-     name: "Olesia Test",
-     address: "Test",
-     phone: 20000
-    }
-    return res.send(user);
+   
+   app.post('/api/v1/person/add', (request, response) => {
+    data.push(
+      {id:request.body.id,
+        name:request.body.name,
+        address: request.body.address,
+        phone: request.body.phone
+      });
+              
+      response.status(200).send({
+            success: 'true',
+            message:  JSON.stringify(request.body) + 'user added'
+        });
 });
-
 
 const PORT = 5000;
 app.listen(PORT, () => {
