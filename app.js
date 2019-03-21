@@ -1,35 +1,43 @@
 import express from 'express';
-import database from './database/info';
 import bodyParser from 'body-parser';
+import fs from 'fs';
 
+// Set up the express app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+// Parse incoming requests data
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
 
-app.get('/api/v1/person/info', (request, response) => {
-    response.status(200).send({
-      success: 'true',
-      message: 'Information retrieved successfully',
-      info: database
+app.get('/api/v1/person/info', (request,response) => {
+  let data = [];
+  fs.readdirSync('./users').forEach(file => {
+      let fileData = fs.readFileSync('./users/'+ file,'utf8');
+      console.log(JSON.parse(fileData));
+      data.push(JSON.parse(fileData));
     });
-   });
-   
-   app.post('/api/v1/person/add', (request, response) => {
-    database.push(
-      {id: Math.random,
-        name:request.body.name,
-        address: request.body.address,
-        phone: request.body.phone
-      });
-              
-      response.status(200).send({
-            success: 'true',
-            message:  'User was successfully added'
-        });
+  response.status(200).send({
+      success: 'true',
+      message: 'information retrieved successfully',
+      info: data
+  });
+});
+
+app.post('/api/v1/person/add', (request, response) => {
+  fs.appendFileSync('./users/user' + request.body.name + '.json', JSON.stringify({
+    id: Math.random(),
+    name: request.body.name,
+    address: request.body.address
+  }));
+  response.status(200).send({
+    success: 'true',
+    message: request.body.name + ' user was successfully added'
+  });
 });
 
 const PORT = 5000;
 app.listen(PORT, () => {
- console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 });
